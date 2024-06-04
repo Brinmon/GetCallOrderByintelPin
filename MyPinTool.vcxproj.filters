@@ -4,13 +4,13 @@
     <ClCompile Include="MyPinTool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README" />
     <None Include="example\attachment.exe">
       <Filter>example</Filter>
     </None>
     <None Include="example\BUU刷题安洵杯_2019_crackMe.dll">
       <Filter>example</Filter>
     </None>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="example">

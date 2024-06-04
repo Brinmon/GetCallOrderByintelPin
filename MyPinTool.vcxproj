@@ -258,9 +258,9 @@
     <ClCompile Include="MyPinTool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README" />
     <None Include="example\attachment.exe" />
     <None Include="example\BUU刷题安洵杯_2019_crackMe.dll" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="example\log.log" />

@@ -1,30 +1,36 @@
 
 #### 解题思路：
 加密手段：[[SM4加密解密]] && [[base64加解密算法]] &&[[凯撒加密解密]]
+
 数据结构分析：
+
 逆向分析中的问题：
+
 获得flag：**flag{SM4foRExcepioN?!}**
+
 
 ##### 学到的知识：
 
 题目类型：
-[[程序入口点前的初始化mainCRTStartup 和 WinMainCRTStartup]]
-[[pysm4库的使用]]
-[[Findcrypt插件]]
-[[SEH反调试机制]]
-[[x96dbg的使用(Windows Reverse)]]
-[[IDA动态调试]]
-[[二进制插桩(Pin)]]
-[[hook]]
-[[异常与调试之SEH、UEH、VEH、VCH以及SEH的区别总结]]
-[[栈溢出混淆代码]]
+1. [[程序入口点前的初始化mainCRTStartup 和 WinMainCRTStartup]]
+2. [[pysm4库的使用]]
+3. [[Findcrypt插件]]
+4. [[SEH反调试机制]]
+5. [[x96dbg的使用(Windows Reverse)]]
+6. [[IDA动态调试]]
+7. [[二进制插桩(Pin)]]
+8. [[hook]]
+9. [[异常与调试之SEH、UEH、VEH、VCH以及SEH的区别总结]]
+10. [[栈溢出混淆代码]]
+ 1. 
 ##### 题目信息：
-![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted image 20231117095901.png)
+![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted%20image%2020231117095901.png)
 简介：
-wp借鉴：[(5条消息) 【BUUCTF逆向 [安洵杯 2019]crackMe】_nb_What_DG的博客-CSDN博客](https://blog.csdn.net/chuxuezhewocao/article/details/125494055)
-[re学习笔记（51）BUUCTF-re-[安洵杯 2019]crackMe-CSDN博客](https://blog.csdn.net/Palmer9/article/details/104776022)
-[re | buuctf逆向刷题之crackMe - z5onk0 - 博客园 (cnblogs.com)](https://www.cnblogs.com/z5onk0/p/17506136.html)
-[[安洵杯 2019]crackMe - Moominn - 博客园 (cnblogs.com)](https://www.cnblogs.com/Moomin/p/15824028.html)
+wp借鉴：
+1. [(5条消息) 【BUUCTF逆向 [安洵杯 2019]crackMe】_nb_What_DG的博客-CSDN博客](https://blog.csdn.net/chuxuezhewocao/article/details/125494055)
+2. [re学习笔记（51）BUUCTF-re-[安洵杯 2019]crackMe-CSDN博客](https://blog.csdn.net/Palmer9/article/details/104776022)
+3. [re | buuctf逆向刷题之crackMe - z5onk0 - 博客园 (cnblogs.com)](https://www.cnblogs.com/z5onk0/p/17506136.html)
+4. [安洵杯 2019]crackMe - Moominn - 博客园 (cnblogs.com)](https://www.cnblogs.com/Moomin/p/15824028.html)
 
 ##### 核心伪代码分析：
 先分析一下程序的执行流程！
@@ -58,9 +64,9 @@ start()->mainCRTStartup()->`__tmainCRTStartup()`->main()
 .text:002C2950                 mov     eax, 1
 .text:002C2955                 jmp     short loc_2C2967
 ```
-![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted image 20231119212318.png)
+![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted%20image%2020231119212318.png)
 该段程序hook的目标是MEssageBoxW
-![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted image 20231119212403.png)
+![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted%20image%2020231119212403.png)
 所以在主程序运行的时候：
 ```c
 int __cdecl __noreturn main_0(int argc, const char **argv, const char **envp)
@@ -83,7 +89,7 @@ int __cdecl __noreturn main_0(int argc, const char **argv, const char **envp)
 ```
 该位置注册的SEH异常处理函数，汇编才看的出来！
 
-![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted image 20231118232634.png)
+![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted%20image%2020231118232634.png)
 该位置注册了SEH函数，sub4100F
 
 所以在调用MessageBoxW的时候会跳转到sub_4F2AB0的位置！
@@ -229,7 +235,7 @@ array[6] = 调用UEH_1.
 ###### 分析：
 逻辑分清楚了，接下来就是看加密过程了！！！
 通过插件ida的[[Findcrypt插件]]
-![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted image 20231121201436.png)
+![](https://raw.githubusercontent.com/Brinmon/Brinmon-blog-img/main/Pasted%20image%2020231121201436.png)
 存在base64加密
 
 总的思路就是：输入内容经过 SM4 加密后再经过变表 base64 加密，结果应当与经过变换后的 Str2 一致
@@ -267,17 +273,3 @@ print('flag{'+bytes.fromhex(hex(clear_num)[2:]).decode()+'}')
 ```
 
 **flag{SM4foRExcepioN?!}**
-
-
-##### 脚本：
-```python
-
-```
-
-```c
-
-```
-
-```c++
-
-```
